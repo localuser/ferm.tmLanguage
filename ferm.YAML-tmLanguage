@@ -1,0 +1,75 @@
+# [PackageDev] target_format: plist, ext: tmLanguage
+---
+name: ferm
+scopeName: source.ferm
+fileTypes: ["ferm"]
+uuid: bbe827dd-77a7-4cb8-816c-c3ae79fd2add
+
+patterns:
+- include: '#comment'
+- include: '#includes'
+- include: '#actions'
+- include: '#chains'
+- include: '#interfaces'
+- include: '#variables'
+- include: '#defines'
+- include: '#modules'
+- include: '#proto'
+- include: '#ips'
+
+repository:
+  comment:
+    match: (#.*)
+    captures:
+      '1': {name: comment.line.number-sign.ferm}
+
+  includes:
+    match: (@include)\s+('[\w\.\/_-]+')
+    captures:
+      '1': {name: keyword.other.ferm}
+      '2': {name: string.quoted.ferm}
+
+  actions:
+    match: ([A-Z]+);
+    captures:
+      '1': {name: keyword.control.ferm}
+
+  chains:
+    match: (chain)\s+([A-Z]+)
+    captures:
+      '1': {name: constant.other.ferm}
+      '2': {name: keyword.other.ferm}
+
+  interfaces:
+    match: (interface|outerface)\s+([a-z0-9]+|\$[A-Za-z][A-Za-z0-9_]+)?
+    captures:
+      '1': {name: support.constant.ferm}
+      '2': {name: variable.parameter.ferm}
+
+
+  variables:
+    match: \$[A-Za-z][A-Za-z0-9_]+
+    name: variable.parameter.ferm
+
+  defines:
+    match: (@def)\s+
+    captures:
+      '1': {name: keyword.other.ferm}
+
+  modules:
+    match: (mod)\s+(\w+)\s+([\w-]+)
+    captures:
+      '1': {name: keyword.control.ferm}
+      '2': {name: support.constant.ferm}
+      '3': {name: support.constant.ferm}
+
+  proto:
+    match: (proto)\s+(\w+)\s+
+    captures:
+      '1': {name: keyword.control.ferm}
+      '2': {name: support.constant.ferm}
+      '3': {name: support.constant.ferm}
+
+  ips:
+    match: (?:[0-9]{1,3}\.){3}[0-9]{1,3}
+    name: constant.numeric.ferm
